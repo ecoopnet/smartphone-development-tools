@@ -1,0 +1,32 @@
+
+#!/bin/sh
+# Convert mp4 video to animation GIF.
+# Requirement: ffmpeg
+
+if [ -z "$1" ]; then
+  (
+  echo "Usage: $(basename $0) video-file.mp4 [extra-options]
+Convert mp4 video to animation GIF.
+i.e: if ~/Downloads/video-file.mp4 was passed, ~/Downloads/video-file.gif was generated.
+To change/add ffmpeg options, just append any options you want after the video filename.
+"
+  ) >&2
+  exit
+fi
+input="$1"
+shift
+opts="$@"
+
+if [ -z "$( echo "$opts" | grep -- '-r ')" ];then
+   opts="$opts -r 10"
+fi
+if [ -z "$( echo "$opts" | grep -- 'scale= ')" ];then
+   opts="$opts -vf scale=320:-1"
+fi
+
+output=$(echo "$input" | sed 's/\.[^\.]*$//').gif
+
+#echo ffmpeg -i "$input" $opts "$output"
+ffmpeg -i "$input" $opts "$output"
+
+
