@@ -28,13 +28,23 @@ androidFile=/sdcard/"$filename"
 set +e
 adb shell screenrecord "$androidFile" &
 _pid="$!"
-trap "kill -TERM '$_pid' && echo killed '$_pid'" SIGINT 
+trap "kill -9 '$_pid' && echo killed '$_pid'" SIGINT
 echo Recording started. To finish, press "Ctrl-C".
 
+# wait until adb process ends.
 wait "$_pid"
 trap - SIGINT
 wait "$_pid"
 set -e
+
+# wait until screenrecord process ends inside android device.
+while :
+do
+  alive=$(adb shell ps | grep screenrecord | grep -v grep | awk '{ print $9 }')
+  if [ -z "$alive" ]; then
+      break
+  fi
+done
 
 adb pull "$androidFile" 
 adb shell rm "$androidFile"
