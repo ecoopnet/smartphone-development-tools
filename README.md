@@ -44,3 +44,25 @@ will execute `ffmpeg -r 10 -i ~/Downloads/hoge.mp4 ....`.
 #### Requirements
 - ffmpeg
 
+#### References
+How to shoot video when developing smartphone apps.
+
+## iOS
+1. Connect your iPhone to your Mac
+2. Open the QuickTime Player app on your Mac
+3. Record a new movie -> select iPhone from the bottom center next to the ● button
+4. Prepare to record on iPhone (e.g. launch the target app)
+5. Press the ● button on your Mac to start recording - stop when finished
+6. On your Mac, go to File → Save and save the file as any file name (hoge.mov).
+
+## Android (Example of using ADB command) 
+You can use adb_screenrecord_pull command in this repository.
+Or manually, follow these steps.
+1. Connect your Android device to your PC.
+2. Prepare for recording on Android (e.g. launch the target app)
+3. Start recording from command line as `adb shell screenrecord /sdcard/hoge.mp4` (file name is optional)
+4. Press Ctrl+C on command line to finish recording
+5. `adb pull /sdcard/hoge.mp4` to transfer from Android to PC
+6. Delete the recording file from Android by `adb shell rm /sdcard/hoge.mp4`.
+
+
