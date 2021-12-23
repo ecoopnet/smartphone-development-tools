@@ -1,0 +1,41 @@
+#!/bin/sh
+set -eu
+
+_help() {
+  echo "ScreenRecord on your Android device and pull recorded file to local directory."
+  echo "Usage: $(basename "$0") movie-filename.mp4" >&2
+
+}
+
+
+filename=$(basename "$1")
+
+
+if [ "$filename" = "" ]; then
+  _help
+  exit 1
+fi
+
+# Prepend overwrite for safety.
+if [ -e "$filename" ]; then
+  echo "filename $filename already exist in current directory." >&2
+  _help
+  exit 2
+fi
+
+androidFile=/sdcard/"$filename"
+
+set +e
+adb shell screenrecord "$androidFile" &
+_pid="$!"
+trap "kill -TERM '$_pid' && echo killed '$_pid'" SIGINT 
+echo Recording started. To finish, press "Ctrl-C".
+
+wait "$_pid"
+trap - SIGINT
+wait "$_pid"
+set -e
+
+adb pull "$androidFile" 
+adb shell rm "$androidFile"
+
