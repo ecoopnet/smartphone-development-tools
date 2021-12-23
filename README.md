@@ -3,9 +3,25 @@ Utility command line tools for Android/iOS development.
 
 ## Android
 ### adb_screenrecord_pull
-ScreenRecord on your Android device and pull recorded file to local directory.
+Execute screenrecord on your Android device and pull the recorded file to local directory.
 
-#### Requirements:
+#### Usage
+```bash
+adb_screenrecord_pull myMovie.mp4
+```
+
+#### Requirements
+- adb
+
+### adb_screencap_pull
+Execute screen capture on your Android device and pull the captured file to local directory.
+
+#### Usage
+```bash
+adb_screencap_pull myScreenShot.png
+```
+
+#### Requirements
 - adb
 
 

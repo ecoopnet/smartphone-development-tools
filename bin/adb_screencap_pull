@@ -1,0 +1,31 @@
+#!/bin/sh
+set -eu
+
+_help() {
+  echo "Screen capture on your Android device and pull the captured file to local directory."
+  echo "Usage: $(basename "$0") movie-filename.png" >&2
+
+}
+
+
+filename=$(basename "$1")
+
+
+if [ "$filename" = "" ]; then
+  _help
+  exit 1
+fi
+
+# Prepend overwrite for safety.
+if [ -e "$filename" ]; then
+  echo "filename $filename already exist in current directory." >&2
+  _help
+  exit 2
+fi
+
+androidFile=/sdcard/"$filename"
+
+adb shell screencap "$androidFile"
+adb pull "$androidFile" 
+adb shell rm "$androidFile"
+
