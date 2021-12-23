@@ -26,15 +26,16 @@ fi
 androidFile=/sdcard/"$filename"
 
 set +e
+adb shell killall screenrecord 2> /dev/null > /dev/null
 adb shell screenrecord "$androidFile" &
 _pid="$!"
-trap "kill -9 '$_pid' && echo killed '$_pid'" SIGINT
+trap "kill -9 '$_pid'" SIGINT
 echo Recording started. To finish, press "Ctrl-C".
 
 # wait until adb process ends.
-wait "$_pid"
+wait "$_pid" 2> /dev/null
 trap - SIGINT
-wait "$_pid"
+wait "$_pid" 2> /dev/null
 set -e
 
 # wait until screenrecord process ends inside android device.
